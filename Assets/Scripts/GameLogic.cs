@@ -33,7 +33,7 @@ public class GameLogic : MonoBehaviour
 
     async Task Decrement(int pressCount)
     {
-        await Task.Delay((int)(DataHub.timeFrame * 1000));
+        await Task.Delay(1000);
         DataHub.runningClicks -= pressCount;
     }
 
@@ -94,20 +94,19 @@ public class GameLogic : MonoBehaviour
 
     void CalculateAnimationDelay(int clickSpeed)
     {
-        animationDelay = (int)(1000/(0.05f*DataHub.averageCPS + 0.5));
+        animationDelay = (int)(1000/(0.05f*DataHub.runningClicks + 0.5));
     }
 
     void FixedUpdate()
     {
         //Calculate CPS and determine if player is cheating
-        DataHub.averageCPS = DataHub.runningClicks / DataHub.timeFrame;
-        if (DataHub.averageCPS > cpsLimit)
+        if (DataHub.runningClicks > cpsLimit)
             Application.Quit(69);
 
         //Flip when character can flip
-        if (flippable && DataHub.averageCPS > 0)
+        if (flippable && DataHub.runningClicks > 0)
         {
-            CalculateAnimationDelay((int)DataHub.averageCPS);
+            CalculateAnimationDelay(DataHub.runningClicks);
             Flip();
         }
     }

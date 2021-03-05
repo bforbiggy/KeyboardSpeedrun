@@ -11,6 +11,6 @@ public class DataUpdater : MonoBehaviour
     private void FixedUpdate()
     {
         timeElapsed.text = $"Time Elapsed: {DataHub.totalTime:N3}";
-        avgCPS.text = $"Average CPS: {DataHub.averageCPS:N1}";
+        avgCPS.text = $"Average CPS: {DataHub.runningClicks}";
     }
 }
