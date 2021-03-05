@@ -4,16 +4,14 @@ using UnityEngine;
 
 public static class DataHub
 {
-    public static float averageCPS = 0;
+    //EQUIVALENT TO CLICKS PER SECOND
     public static int runningClicks = 0;
-    public static readonly float timeFrame = 0.5f;
 
     public static int totalClicks = 0;
     public static float totalTime = float.MaxValue;
 
     public static void Clear()
     {
-        averageCPS = 0;
         runningClicks = 0;
         totalClicks = 0;
         totalTime = 0;
