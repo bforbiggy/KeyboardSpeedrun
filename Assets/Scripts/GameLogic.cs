@@ -17,7 +17,7 @@ public class GameLogic : MonoBehaviour
     //Gameplay numbers
     private static readonly float sensitivity = 0.03f;
     private static readonly float winPosition = 6.5f;
-    private static readonly int cpsLimit = 175;
+    private static readonly int cpsLimit = 150;
 
     void Start()
     {
@@ -60,15 +60,22 @@ public class GameLogic : MonoBehaviour
         }
     }
 
-    void Anticheat(float avgCPS)
+    int ValidInput(string input)
     {
-        if (avgCPS > cpsLimit)
-            Application.Quit(69);
+        int total = 0;
+
+        for(int i = 0; i < input.Length; ++i)
+        {
+            if (Input.GetKeyDown(input[i].ToString()))
+                total++;
+        }
+
+        return total;
     }
 
     void Update()
     {
-        int pressCount = Input.inputString.Length;
+        int pressCount = ValidInput(Input.inputString);
 
         //Moves character based on player input
         Move(pressCount);
@@ -94,9 +101,10 @@ public class GameLogic : MonoBehaviour
     {
         //Calculate CPS and determine if player is cheating
         DataHub.averageCPS = DataHub.runningClicks / DataHub.timeFrame;
-        Anticheat(DataHub.averageCPS);
+        if (DataHub.averageCPS > cpsLimit)
+            Application.Quit(69);
 
-        //Flip is cps limit has been reached and character can flip
+        //Flip when character can flip
         if (flippable && DataHub.averageCPS > 0)
         {
             CalculateAnimationDelay((int)DataHub.averageCPS);
